@@ -42,6 +42,10 @@ func (g *game) Deal() {
 
 func NewGame(numberOfPlayers int, deck card.Cards) game {
 	players := make([]*player.Player, numberOfPlayers)
+	for i := 0; i < len(players); i++ {
+		players[i] = new(player.Player)
+	}
+
 	return game{
 		Players: players,
 		Deck:    deck,
