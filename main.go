@@ -46,8 +46,7 @@ func (g *game) Deal() {
 	for _, player := range g.Players {
 		cards := g.Deck.GetTwo()
 		player.Hand = append(player.Hand, cards...)
-		player.CalculateScore()
-		player.DetermineStatus()
+		g.CalculateScores()
 	}
 }
 
