@@ -16,8 +16,18 @@ var g = game{}
 func main() {
 	g = NewGame(4, card.NewDeck())
 	g.Deal()
-	g.CalculateScores()
+	g.Play()
 	g.PrintPlayers()
+}
+
+func (g *game) Play() {
+	for i := 0; i < len(g.Players); i++ {
+		for g.Players[i].Status == player.HIT {
+			g.Players[i].Hit(g.Deck.GetOne())
+			g.Players[i].CalculateScore()
+			g.Players[i].DetermineStatus()
+		}
+	}
 }
 
 func (g *game) PrintPlayers() {
@@ -29,6 +39,7 @@ func (g *game) PrintPlayers() {
 func (g *game) CalculateScores() {
 	for _, player := range g.Players {
 		player.CalculateScore()
+		player.DetermineStatus()
 	}
 }
 func (g *game) Deal() {
