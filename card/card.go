@@ -13,7 +13,6 @@ type card struct {
 type Cards []card
 
 var suites = []string{"hearts", "diamonds", "spades", "clubs"}
-
 var values = map[string]int{
 	"ace":   1,
 	"two":   2,
@@ -41,6 +40,7 @@ func (nec *NotEnoughCards) Error() string {
 func (c *Cards) GetOne() []card {
 	return c.withdraw(1)
 }
+
 func (c *Cards) GetTwo() []card {
 	return c.withdraw(2)
 }
@@ -54,29 +54,31 @@ func (c *Cards) withdraw(n int) []card {
 
 	pulled := make([]card, n)
 	copy(pulled, (*c)[:n])
-	for i := 0; i < n; i++ {
-		(*c)[i] = card{}
-	}
-
 	*c = (*c)[n:]
+
 	return pulled
 }
 
 func (c *Cards) Shuffle() {
 	rand.Seed(time.Now().UnixNano())
-	rand.Shuffle(len(*c), func(i, j int) { (*c)[i], (*c)[j] = (*c)[j], (*c)[i] })
+	rand.Shuffle(len(*c), func(i, j int) {
+		(*c)[i], (*c)[j] = (*c)[j], (*c)[i]
+	})
 }
 
 func NewDeck() Cards {
 	c := Cards{}
+
 	for _, value := range values {
 		for _, suite := range suites {
 			c = append(c, card{
-				suite,
-				value,
+				Suite: suite,
+				Value: value,
 			})
 		}
 	}
+
 	c.Shuffle()
+
 	return c
 }
